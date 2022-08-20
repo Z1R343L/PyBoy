@@ -12,6 +12,7 @@ except ImportError:
 
 # THIS IS ONLY MADE FOR 8x16 FONTS AND 256 CHARACTER CODE PAGES
 def main(bdffile, unifile, *args):
+
     class Char:
         def __init__(self, name):
             self.name = name
@@ -60,7 +61,7 @@ The full source code for the Terminus font is available at
         )
 
         with open("OFL.txt", "r") as licensefile:
-            for line in licensefile.readlines():
+            for line in licensefile:
                 print(line, end="", file=f)
         print("", file=f)
 
@@ -70,9 +71,7 @@ The full source code for the Terminus font is available at
             print(blob[n:n + 72].decode(), file=f)
 
     if "--bitmap" in args:
-        if not Image:
-            print("Cannot create bitmap: Could not import Pillow")
-        else:
+        if Image:
             buf = bytearray()
             for row in range(16):
                 for pixrow in range(16):
@@ -81,6 +80,8 @@ The full source code for the Terminus font is available at
 
             image = Image.frombytes("1", (128, 256), bytes(buf))
             image.save("fontsheet.bmp")
+        else:
+            print("Cannot create bitmap: Could not import Pillow")
 
 
 if __name__ == "__main__":
